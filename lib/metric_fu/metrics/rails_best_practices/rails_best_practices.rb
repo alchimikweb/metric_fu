@@ -16,7 +16,7 @@ module MetricFu
     def analyze
       @problems = @output.collect do |problem|
         {
-          :file    => problem.filename,
+          :file    => problem.filename.sub(/^#{Dir.pwd}\//, ''),
           :line    => problem.line_number,
           :problem => problem.message,
           :url     => problem.url
