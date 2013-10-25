@@ -177,7 +177,11 @@ module MetricFu
       filename = complete_file_path(name)
       link_prefix = MetricFu::Formatter::Templates.option('link_prefix')
       if link_prefix
-        "#{link_prefix}/#{name.gsub(/:.*$/, '')}"
+        if link_prefix.include? 'subl'
+          "subl://open?url=file://#{filename}&line=#{line ? line : 1}"
+        else
+          "#{link_prefix}/#{name.gsub(/:.*$/, '')}"
+        end
       elsif render_as_txmt_protocol?
         "txmt://open/?url=file://#{filename}" << (line ? "&line=#{line}" : "")
       # elsif render_as_mvim_protocol?
