@@ -1,7 +1,7 @@
 module MetricFu
 
   class ReekGenerator < Generator
-    REEK_REGEX = /^(\S+) (.*) \((.*)\)$/
+    REEK_REGEX = /^(\[.*\]:)(\S+) (.*) \((.*)\)$/
 
     def self.metric
       :reek
@@ -29,10 +29,14 @@ module MetricFu
         code_smells = match.map do |smell|
           match_object = smell.match(REEK_REGEX)
           next unless match_object
-          {:method => match_object[1].strip,
-           :message => match_object[2].strip,
-           :type => match_object[3].strip}
+          {
+            :lines => match_object[1][1..-3].split(',').map(&:to_i),
+            :method => match_object[2].strip,
+            :message => match_object[3].strip,
+            :type => match_object[4].strip
+          }
         end.compact
+
         {:file_path => file_path, :code_smells => code_smells}
       end
     end
