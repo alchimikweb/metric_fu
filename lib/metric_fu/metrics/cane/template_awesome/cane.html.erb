@@ -65,36 +65,40 @@
     <% end %>
   </table>
   <% end %>
+
   <% if @cane[:violations][:comment] && @cane[:violations][:comment].size > 0 %>
-	<h3>Class definitions requiring comments (<%= @cane[:violations][:comment].size %>)</h3>
-	<table>
-    <tr>
-		  <th>File</th>
-		  <th>Class</th>
-    </tr>
-    <% count = 0 %>
-    <% @cane[:violations][:comment].each do |violation| %>
-      <tr class='<%= cycle("light", "dark", count) %>'>
-        <td><%=violation[:line]%></td>
-        <td><%=violation[:class_name]%></td>
-      </tr>
-      <% count += 1 %>
-		<% end %>
-	</table>
-  <% end %>
-  <% if @cane[:violations][:others] && @cane[:violations][:others].size > 0 %>
-  <h3>Others (<%= @cane[:violations][:others].size %>)</h3>
-  <table>
-    <tr>
-      <th>Description</th>
-    </tr>
-    <% @cane[:violations][:others].each do |violation| %>
+  	<h3>Class definitions requiring comments (<%= @cane[:violations][:comment].size %>)</h3>
+  	<table>
       <tr>
-        <td><%=violation[:description]%></td>
+  		  <th>File</th>
+  		  <th>Class</th>
       </tr>
-    <% end %>
-  </table>
+      <% count = 0 %>
+      <% @cane[:violations][:comment].each do |violation| %>
+        <% filename = violation[:line].split(':') %>
+        <tr class='<%= cycle("light", "dark", count) %>'>
+          <td><%= link_to_filename(filename[0], filename[1]) %></td>
+          <td><%=violation[:class_name]%></td>
+        </tr>
+        <% count += 1 %>
+  		<% end %>
+  	</table>
   <% end %>
+
+  <% if @cane[:violations][:others] && @cane[:violations][:others].size > 0 %>
+    <h3>Others (<%= @cane[:violations][:others].size %>)</h3>
+    <table>
+      <tr>
+        <th>Description</th>
+      </tr>
+      <% @cane[:violations][:others].each do |violation| %>
+        <tr>
+          <td><%=violation[:description]%></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+
 	<p>Generated on <%= Time.now.localtime %></p>
 </body>
 </html>
