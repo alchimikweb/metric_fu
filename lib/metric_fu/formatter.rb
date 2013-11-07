@@ -4,8 +4,8 @@ module MetricFu
     BUILTIN_FORMATS = {
       'html' => ['MetricFu::Formatter::HTML', 'Generates a templated HTML report using the configured template class and graph engine.'],
       'yaml' => ['MetricFu::Formatter::YAML', 'Generates the raw output as yaml']
-    }
-    DEFAULT = [[:html]]
+    } unless const_defined? :BUILTIN_FORMATS
+    DEFAULT = [[:html]] unless const_defined? :DEFAULT
 
     class << self
       include MetricFu::Constantize
